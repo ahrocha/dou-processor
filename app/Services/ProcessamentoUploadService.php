@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Upload;
+use App\Models\Artigo;
 
 class ProcessamentoUploadService
 {
@@ -71,6 +72,29 @@ class ProcessamentoUploadService
 
                 $article = $xml->article;
                 $body = $article->body ?? null;
+
+                Artigo::create([
+                    'upload_id' => $upload->id,
+                    'article_id' => (string) $article['id'],
+                    'name' => (string) $article['name'],
+                    'id_oficio' => (string) $article['idOficio'],
+                    'pub_name' => (string) $article['pubName'],
+                    'art_type' => (string) $article['artType'],
+                    'pub_date' => !empty($article['pubDate']) ? date('Y-m-d', strtotime((string)$article['pubDate'])) : null,
+                    'art_class' => (string) $article['artClass'],
+                    'art_category' => (string) $article['artCategory'],
+                    'art_size' => (string) $article['artSize'],
+                    'art_notes' => (string) $article['artNotes'],
+                    'number_page' => (string) $article['numberPage'],
+                    'pdf_page' => (string) $article['pdfPage'],
+                    'edition_number' => (string) $article['editionNumber'],
+                    'identifica' => (string) $article->body->Identifica,
+                    'data' => (string) $article->body->Data,
+                    'ementa' => (string) $article->body->Ementa,
+                    'titulo' => (string) $article->body->Titulo,
+                    'sub_titulo' => (string) $article->body->SubTitulo,
+                    'texto' => (string) $article->body->Texto,
+                ]);
 
                 logger()->info("Parse bem-sucedido: ID={$article['id']}, Título={$body->Titulo}, SubTitulo={$body->SubTitulo}, ArquivoXml={$arquivoXml}");
 
