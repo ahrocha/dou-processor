@@ -9,4 +9,9 @@ class Upload extends Model
 {
     /** @use HasFactory<\Database\Factories\UploadFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'nome_original',
+        'caminho_arquivo',
+    ];
 }
