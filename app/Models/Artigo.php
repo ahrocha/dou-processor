@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\ArtigoCreated;
 
 class Artigo extends Model
 {
@@ -33,4 +34,10 @@ class Artigo extends Model
         'texto',
     ];
 
+    protected static function booted()
+    {
+        static::created(function ($artigo) {
+            ArtigoCreated::dispatch($artigo);
+        });
+    }
 }
