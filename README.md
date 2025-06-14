@@ -1,11 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# DOU Processor (Laravel 12)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma aplicação Laravel que permite o upload de arquivos `.zip` contendo XMLs de publicações do Diário Oficial. Após o upload, os arquivos são descompactados e os dados XML são processados e salvos no banco de dados. Cada artigo processado é enviado para uma fila RabbitMQ para posterior consumo.
+
+## Requisitos
+
+- Docker + Docker Compose
+- PHP 8.3 (caso queira rodar localmente sem Docker)
+- Composer
+- Make (opcional, para uso com scripts)
+
+## Configuração
+
+Clone este repositório e acesse o diretório:
+
+```bash
+git clone https://github.com/ahrocha/dou-processor.git
+cd dou-processor
+```
+
+Copie o arquivo de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+Gere a chave da aplicação:
+
+```bash
+php artisan key:generate
+```
+
+Suba os containers com:
+
+```bash
+docker compose up --build -d
+```
+
+As migrations são executadas automaticamente:
+
+## Executando a aplicação
+
+A aplicação estará disponível em: [http://localhost:8080](http://localhost:8080)
+
+Para enviar um arquivo `.zip`, use o seguinte comando `curl`:
+
+```bash
+curl -X POST http://localhost:8080/api/uploads \
+  -F "arquivo=@S02052025.zip" \
+  -H "Accept: application/json"
+```
+
+## Workers
+
+A aplicação possui duas filas:
+
+1. **A fila de upload:** processa o `.zip`, extrai e salva os artigos no banco.
+2. **A fila de publicação:** escuta eventos de `ArtigoCreated` e publica os dados na fila `artigos-criados`.
+
+## Testes
+
+Para rodar os testes automatizados:
+
+```bash
+docker exec -it dou-app php artisan test --env=testing
+```
+
+Certifique-se de que `.env.testing` está configurado corretamente para usar SQLite ou outro banco isolado.
+
+## Fila (RabbitMQ)
+
+A configuração da conexão RabbitMQ deve estar no `.env` com variáveis como:
+
+---
+
+
 
 ## About Laravel
 
