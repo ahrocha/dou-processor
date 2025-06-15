@@ -1,19 +1,19 @@
 #!/bin/bash
 
-# Caminho do banco de dados SQLite para testes
-DB_PATH="database/testing.sqlite"
+echo "Preparando banco de dados de testes..."
 
-# Verifica se o banco existe, senão cria
-if [ ! -f "$DB_PATH" ]; then
-  echo "Criando banco de dados de testes em $DB_PATH"
-  touch "$DB_PATH"
+DB_FILE="database/testing.sqlite"
+
+# Cria o diretório se não existir
+mkdir -p database
+
+# Remove e recria o arquivo do banco de dados
+if [ -f "$DB_FILE" ]; then
+    rm "$DB_FILE"
 fi
+touch "$DB_FILE"
 
-# Ajusta permissões
-chmod 664 "$DB_PATH"
+# Executa as migrations
+php artisan migrate --env=testing --force
 
-# Executa as migrations no ambiente de testes
-docker exec -it dou-app php artisan migrate --env=testing --force
-
-# Executa os testes
-docker exec -it dou-app php artisan test --env=testing
+echo "Banco de dados de testes pronto."

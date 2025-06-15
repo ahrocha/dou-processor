@@ -1,0 +1,26 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: mbstring, pdo_sqlite, zip
+          tools: composer
+
+      - name: Composer
+        run: composer install --no-progress --prefer-dist
+
+      - name: Prepare test database
+        run: ./prepare-tests.sh
+
+      - name: Run Tests
+        run: php artisan test --env=testing
