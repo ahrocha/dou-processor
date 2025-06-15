@@ -13,6 +13,8 @@ if [ -f "$DB_FILE" ]; then
 fi
 touch "$DB_FILE"
 
+php artisan key:generate --env=testing
+
 # Executa as migrations
 php artisan migrate --env=testing --force
 
