@@ -24,3 +24,6 @@ jobs:
 
       - name: Run Tests
         run: php artisan test --env=testing
+
+      - name: Run PHPStan
+        run: composer analyse
