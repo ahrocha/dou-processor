@@ -12,8 +12,10 @@ fi
 # Ajusta permissões
 chmod 664 "$DB_PATH"
 
+php artisan key:generate --env=testing
+
 # Executa as migrations no ambiente de testes
 docker exec -it dou-app php artisan migrate --env=testing --force
 
 # Executa os testes
-docker exec -it dou-app php artisan test --env=testing
+docker exec -it dou-app php artisan test --env=testing --coverage-html=coverage/

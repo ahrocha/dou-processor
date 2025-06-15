@@ -57,7 +57,7 @@ services:
     depends_on:
       - app
       - rabbitmq
-      - mysql
+      - db
 
   rabbitmq:
     image: rabbitmq:3-management

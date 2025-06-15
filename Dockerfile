@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y \
     zip unzip git curl libzip-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo_mysql zip soap dom sockets
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN echo "upload_max_filesize=250M\npost_max_size=250M" > /usr/local/etc/php/conf.d/uploads.ini
