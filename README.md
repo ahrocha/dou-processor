@@ -81,8 +81,9 @@ A aplicação possui duas filas:
 Para rodar os testes automatizados:
 
 ```bash
-docker exec -it dou-app php artisan test --env=testing
+./test-local.sh
 ```
+Relatórios serão gerados em /coverage
 
 ---
 
