@@ -84,14 +84,20 @@ Para rodar os testes automatizados:
 docker exec -it dou-app php artisan test --env=testing
 ```
 
-Certifique-se de que `.env.testing` está configurado corretamente para usar SQLite ou outro banco isolado.
-
-## Fila (RabbitMQ)
-
-A configuração da conexão RabbitMQ deve estar no `.env` com variáveis como:
-
 ---
 
+## Análise de código
+
+### PHP Stan
+```bash
+composer analyse
+```
+
+### PHP CS
+```bash
+composer cs:check
+composer cs:fix
+```
 
 
 ## About Laravel
