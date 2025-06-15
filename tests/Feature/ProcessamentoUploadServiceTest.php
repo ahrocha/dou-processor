@@ -9,22 +9,27 @@ use App\Models\Upload;
 use App\Models\Artigo;
 use App\Services\ProcessamentoUploadService;
 use ZipArchive;
+use Illuminate\Support\Facades\Artisan;
 
 class ProcessamentoUploadServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Artisan::call('migrate');
+    }
+
     public function test_processa_upload_valido_e_persiste_artigo()
     {
-        // Simula armazenamento
         Storage::fake('local');
 
-        // Cria diretório e conteúdo do ZIP
         $zipPath = storage_path('app/test_upload.zip');
         $tempDir = storage_path('app/temp_test');
         @mkdir($tempDir, 0775, true);
 
-        // XML válido
         $xmlContent = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
@@ -43,26 +48,21 @@ XML;
 
         file_put_contents("$tempDir/valid.xml", $xmlContent);
 
-        // Cria ZIP
         $zip = new ZipArchive();
         $zip->open($zipPath, ZipArchive::CREATE);
         $zip->addFile("$tempDir/valid.xml", "valid.xml");
         $zip->close();
 
-        // Simula Upload no banco
         $upload = Upload::create([
             'nome_original' => 'test_upload.zip',
             'caminho_arquivo' => 'test_upload.zip',
         ]);
 
-        // Move o ZIP para onde o Service espera
         copy($zipPath, storage_path('app/' . $upload->caminho_arquivo));
 
-        // Executa o serviço
         $service = new ProcessamentoUploadService();
         $service->processar($upload);
 
-        // Verifica se o artigo foi salvo
         $this->assertDatabaseHas('artigos', [
             'upload_id' => $upload->id,
             'article_id' => '123',
