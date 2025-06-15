@@ -36,7 +36,7 @@ class ArtigoController extends Controller
      */
     public function show(Artigo $artigo)
     {
-        //
+        return response()->json($artigo);
     }
 
     /**

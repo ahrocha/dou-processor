@@ -22,7 +22,7 @@ class UploadController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Upload::all());
     }
 
     /**
@@ -61,5 +61,34 @@ class UploadController extends Controller
     public function destroy(Upload $upload)
     {
         //
+    }
+
+    public function show(Upload $upload)
+    {
+        $perPage = request()->query('per_page', 20);
+        $artigos = $upload->artigos()
+        ->select([
+            'id',
+            'upload_id',
+            'article_id',
+            'name',
+            'art_type',
+            'art_category',
+            'pdf_page',
+            'pub_date',
+            'created_at',
+            'updated_at',
+        ])
+        ->paginate($perPage);
+
+        $artigos->getCollection()->transform(function ($artigo) {
+            $artigo->url = route('artigos.show', ['artigo' => $artigo]);
+            return $artigo;
+        });
+
+        return response()->json([
+            'upload' => $upload,
+            'artigos' => $artigos,
+        ]);
     }
 }

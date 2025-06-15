@@ -14,4 +14,9 @@ class Upload extends Model
         'nome_original',
         'caminho_arquivo',
     ];
+
+    public function artigos()
+    {
+        return $this->hasMany(\App\Models\Artigo::class);
+    }
 }
