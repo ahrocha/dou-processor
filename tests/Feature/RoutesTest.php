@@ -57,10 +57,12 @@ class RoutesTest extends TestCase
     public function test_get_artigos_show()
     {
         $upload = Upload::factory()->create();
-        $artigo = Artigo::factory()->create([
-            'upload_id' => $upload->id,
-            'titulo' => 'Teste Título',
-        ]);
+        $artigo = Artigo::withoutEvents(function () use ($upload) {
+            return Artigo::factory()->create([
+                'upload_id' => $upload->id,
+                'titulo' => 'Teste Título',
+            ]);
+        });
 
         $response = $this->getJson("/api/artigos/{$artigo->id}");
 
