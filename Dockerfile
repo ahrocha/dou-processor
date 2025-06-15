@@ -19,4 +19,5 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-CMD ["/start.sh"]
+COPY start-worker.sh /start-worker.sh
+RUN chmod +x /start-worker.sh
