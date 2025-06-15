@@ -19,11 +19,15 @@ jobs:
       - name: Composer
         run: composer install --no-progress --prefer-dist
 
-      - name: Prepare test database
+      - name: Prepara test database
         run: ./prepare-tests.sh
 
-      - name: Run Tests
+      - name: Tests
         run: php artisan test --env=testing
 
-      - name: Run PHPStan
+      - name: PHPStan
         run: composer analyse
+
+      - name: Verificar padrão de código com PHP CS Fixer
+        run: |
+          ./vendor/bin/php-cs-fixer fix --dry-run --diff

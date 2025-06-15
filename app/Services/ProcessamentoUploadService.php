@@ -20,7 +20,7 @@ class ProcessamentoUploadService
 
         logger()->info("Extraindo ZIP: " . $caminhoCompleto);
 
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
         $res = $zip->open($caminhoCompleto);
 
         if ($res !== true) {

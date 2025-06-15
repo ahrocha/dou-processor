@@ -10,7 +10,6 @@ use App\Models\Artigo;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-
 class RoutesTest extends TestCase
 {
     use RefreshDatabase;

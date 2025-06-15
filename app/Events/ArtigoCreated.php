@@ -13,11 +13,14 @@ use App\Models\Artigo;
 
 class ArtigoCreated
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable;
+    use SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public Artigo $artigo) {}
+    public function __construct(public Artigo $artigo)
+    {
+    }
 
 }

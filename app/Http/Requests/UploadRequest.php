@@ -26,7 +26,7 @@ class UploadRequest extends FormRequest
         ];
     }
 
-        public function messages(): array
+    public function messages(): array
     {
         return [
             'arquivo.required' => 'O arquivo é obrigatório.',
