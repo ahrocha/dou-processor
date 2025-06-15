@@ -16,7 +16,7 @@ class ArticleXmlParser
 
         if (!$ok) {
             $erros = libxml_get_errors();
-            logger()->error("Erro ao processar $arquivoXml:");
+            logger()->error("Erro ao executar o parse de $arquivoXml: ");
             foreach ($erros as $erro) {
                 logger()->error(trim($erro->message));
             }
@@ -24,9 +24,6 @@ class ArticleXmlParser
             return null;
         }
 
-        $xml = simplexml_import_dom($dom);
-
-        return $xml;
-
+        return simplexml_import_dom($dom);
     }
 }

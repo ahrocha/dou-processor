@@ -23,6 +23,7 @@ class ProcessaUploadJob implements ShouldQueue
 
     public function handle(ProcessamentoUploadService $service): void
     {
+        logger()->info("Iniciando processamento do upload #{$this->upload->id} - {$this->upload->nome_original}");
         $service->processar($this->upload);
     }
 }

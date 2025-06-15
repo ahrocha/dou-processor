@@ -19,6 +19,8 @@ class ProcessamentoUploadService
             return;
         }
 
+        logger()->info("Processando upload #{$upload->id} com " . count($arquivos) . " arquivos XML.");
+
         foreach ($arquivos as $arquivoXml) {
             try {
 
@@ -34,33 +36,13 @@ class ProcessamentoUploadService
                 }
                 $article = $xml->article;
 
-                Artigo::create([
-                    'upload_id' => $upload->id,
-                    'article_id' => (string) $article['id'],
-                    'name' => (string) $article['name'],
-                    'id_oficio' => (string) $article['idOficio'],
-                    'pub_name' => (string) $article['pubName'],
-                    'art_type' => (string) $article['artType'],
-                    'pub_date' => !empty($article['pubDate']) ? date('Y-m-d', strtotime((string)$article['pubDate'])) : null,
-                    'art_class' => (string) $article['artClass'],
-                    'art_category' => (string) $article['artCategory'],
-                    'art_size' => (string) $article['artSize'],
-                    'art_notes' => (string) $article['artNotes'],
-                    'number_page' => (string) $article['numberPage'],
-                    'pdf_page' => (string) $article['pdfPage'],
-                    'edition_number' => (string) $article['editionNumber'],
-                    'identifica' => (string) $article->body->Identifica,
-                    'data' => (string) $article->body->Data,
-                    'ementa' => (string) $article->body->Ementa,
-                    'titulo' => (string) $article->body->Titulo,
-                    'sub_titulo' => (string) $article->body->SubTitulo,
-                    'texto' => (string) $article->body->Texto,
-                ]);
+                $newArticle = new ArticleCreator();
+                $article = $newArticle->create($article, $upload);
 
-                logger()->info("Parse bem-sucedido: ID={$article['id']}, Título={$article->body->Titulo}, SubTitulo={$article->body->SubTitulo}, ArquivoXml={$arquivoXml}");
+                logger()->info("Parse bem-sucedido: ID={$article['id']}, Título={$article->titulo}, SubTitulo={$article->sub_titulo}, ArquivoXml={$arquivoXml}");
 
             } catch (\Exception $e) {
-                logger()->error("Erro ao processar $arquivoXml: " . $e->getMessage());
+                logger()->error("Erro ao processar upload $upload->id - $arquivoXml: " . $e->getMessage());
             }
         }
 

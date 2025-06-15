@@ -38,8 +38,8 @@ class ProcessamentoUploadServiceTest extends TestCase
       <Identifica>Identificação</Identifica>
       <Data>2024-06-01</Data>
       <Ementa>Ementa do artigo</Ementa>
-      <Titulo>Título</Titulo>
-      <SubTitulo>Subtítulo</SubTitulo>
+      <Titulo>Titulo</Titulo>
+      <SubTitulo>Subtitulo</SubTitulo>
       <Texto>Texto completo do artigo</Texto>
     </body>
   </article>
@@ -61,13 +61,14 @@ XML;
         copy($zipPath, storage_path('app/' . $upload->caminho_arquivo));
 
         $service = new ProcessamentoUploadService();
+        logger()->info("Iniciando teste de processamento do upload #{$upload->id} com arquivo: {$upload->caminho_arquivo}");
         $service->processar($upload);
 
         $this->assertDatabaseHas('artigos', [
             'upload_id' => $upload->id,
             'article_id' => '123',
-            'titulo' => 'Título',
-            'sub_titulo' => 'Subtítulo',
+            'titulo' => 'Titulo',
+            'sub_titulo' => 'Subtitulo',
         ]);
     }
 }
