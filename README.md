@@ -50,6 +50,25 @@ curl -X POST http://localhost:8080/api/uploads \
   -H "Accept: application/json"
 ```
 
+### exemplos de rota GET
+```
+GET http://localhost:8000/api/uploads
+
+GET http://localhost:8000/api/uploads/:id
+
+GET http://localhost:8000/api/artigos/:id
+
+```
+
+## Rabbit MQ
+O RabbitMQ pode ser acessado em modo de gerenciamento pela url:
+```
+http://localhost:15672/
+```
+Caso não altere, os logins e senhas configurados são:
+login: guest
+senha: guest
+
 ## Workers
 
 A aplicação possui duas filas:
