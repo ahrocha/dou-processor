@@ -58,6 +58,7 @@ services:
       - app
       - rabbitmq
       - db
+    restart: on-failure:5
 
   rabbitmq:
     image: rabbitmq:3-management
