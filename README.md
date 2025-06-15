@@ -99,3 +99,12 @@ composer analyse
 composer cs:check
 composer cs:fix
 ```
+
+# Observação
+
+Há o arquivo de cálculo de galões e garrafas de água, na raíz do projeto.
+Para executá-lo:
+
+```bash
+php galoes.php
+```
